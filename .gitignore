@@ -1,0 +1,38 @@
+#java compile
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# temporary files
+*~
+
+# build and IDE specific files and directories 
+.gradle/
+.project
+.settings
+.classpath
+.externalToolBuilders/
+.gradle/
+.tern*
+build/
+build/*
+build
+bin/
+bin
+
+#merge conflict
+*.orig
+
+# gradle
+.gradle/
+.gradle
+.gradle/*
+
+
+
