@@ -9,5 +9,7 @@ public interface IUsagerDAO {
 	UsagerDTO ajouter(UsagerDTO usagerDTO);
 
 	List<UsagerDTO> readAll();
+	
+	List<UsagerDTO> readByDTO(UsagerDTO usagerDTO);
 
 }

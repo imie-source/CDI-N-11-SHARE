@@ -30,7 +30,8 @@ public class UsagerDAO implements IUsagerDAO {
 	@Override
 	public UsagerDTO ajouter(UsagerDTO usagerDTO) {
 		UsagerDTO usagerDTOInserted = null;
-		try (Connection connection = ConnectionProvider.getInstance().provideConnection()) {
+		try (Connection connection = ConnectionProvider.getInstance()
+				.provideConnection()) {
 			String query = "INSERT INTO usager(nom, prenom, date_naissance, email)"
 					+ " VALUES (?, ?, ?, ?) returning id, nom, prenom, date_naissance, email, nb_connexion";
 			try (PreparedStatement statement = connection
@@ -65,7 +66,8 @@ public class UsagerDAO implements IUsagerDAO {
 	@Override
 	public List<UsagerDTO> readAll() {
 		List<UsagerDTO> usagerDTOs = new ArrayList<UsagerDTO>();
-		try (Connection connection = ConnectionProvider.getInstance().provideConnection()) {
+		try (Connection connection = ConnectionProvider.getInstance()
+				.provideConnection()) {
 			try (Statement statement = connection.createStatement()) {
 				String query = "select * from usager";
 				try (ResultSet resultSet = statement.executeQuery(query)) {
@@ -90,6 +92,90 @@ public class UsagerDAO implements IUsagerDAO {
 		usagerDTO.setEmail(resultSet.getString("email"));
 		usagerDTO.setNbConnexion(resultSet.getInt("nb_connexion"));
 		return usagerDTO;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.imie.DAO.IUsagerDAO#readByDTO(fr.imie.DTO.UsagerDTO)
+	 */
+	@Override
+	public List<UsagerDTO> readByDTO(UsagerDTO usagerDTO) {
+		List<UsagerDTO> retour = new ArrayList<UsagerDTO>();
+		try (Connection connection = ConnectionProvider.getInstance()
+				.provideConnection()) {
+			String query = "select id, nom, prenom, date_naissance, email, nb_connexion from usager ";
+			Boolean firstConstraint = true;
+			if (usagerDTO.getNom() != null) {
+				query = query.concat(firstConstraint ? "where" : "and").concat(
+						" nom like ?");
+				firstConstraint = false;
+			}
+			if (usagerDTO.getPrenom() != null) {
+				query = query.concat(firstConstraint ? "where" : "and").concat(
+						" prenom like ?");
+				firstConstraint = false;
+			}
+			if (usagerDTO.getDateNaiss() != null) {
+				query = query.concat(firstConstraint ? "where" : "and").concat(
+						" date_naissance=?");
+				firstConstraint = false;
+			}
+			if (usagerDTO.getNbConnexion() != null) {
+				query = query.concat(firstConstraint ? "where" : "and").concat(
+						" nb_connexion=?");
+				firstConstraint = false;
+			}
+			if (usagerDTO.getId() != null) {
+				query = query.concat(firstConstraint ? "where" : "and").concat(
+						" id=?");
+				firstConstraint = false;
+			}
+			if (usagerDTO.getEmail() != null) {
+				query = query.concat(firstConstraint ? "where" : "and").concat(
+						" email like ?");
+				firstConstraint = false;
+			}
+
+			try (PreparedStatement preparedStatement = connection
+					.prepareStatement(query)) {
+
+				Integer numParam = 1;
+				if (usagerDTO.getNom() != null) {
+					preparedStatement.setString(numParam++,
+							"%" + usagerDTO.getNom() + "%");
+				}
+				if (usagerDTO.getPrenom() != null) {
+					preparedStatement.setString(numParam++,
+							"%" + usagerDTO.getPrenom() + "%");
+				}
+				if (usagerDTO.getDateNaiss() != null) {
+					preparedStatement.setDate(numParam++, new Date(usagerDTO
+							.getDateNaiss().getTime()));
+				}
+				if (usagerDTO.getNbConnexion() != null) {
+					preparedStatement.setInt(numParam++,
+							usagerDTO.getNbConnexion());
+				}
+				if (usagerDTO.getId() != null) {
+					preparedStatement.setInt(numParam++, usagerDTO.getId());
+				}
+				if (usagerDTO.getEmail() != null) {
+					preparedStatement.setString(numParam++,
+							"%" + usagerDTO.getEmail() + "%");
+				}
+
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					while (resultSet.next()) {
+						retour.add(buildDTO(resultSet));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return retour;
 
 	}
 }
