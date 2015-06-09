@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.imie.DTO.SiteDTO;
+import fr.imie.DTO.UsagerDTO;
 
 /**
  * @author imie
@@ -160,16 +161,34 @@ public class SiteDAO implements ISiteDAO {
 
 	@Override
 	public Integer delete(SiteDTO siteDTO) {
-		Integer retour;
+		// TODO singleton sur la classe DAO
+		UsagerDAO usagerDAO = new UsagerDAO();
+		Integer retour = null;
 		try (Connection connection = ConnectionProvider.getInstance()
 				.provideConnection()) {
-			String query = "DELETE FROM site WHERE id=?";
-			try (PreparedStatement statement = connection
-					.prepareStatement(query)) {
-				statement.setInt(1, siteDTO.getId());
 
-				retour = statement.executeUpdate();
+			try {
+				connection.setAutoCommit(false);
+				UsagerDTO usagerDTO = new UsagerDTO();
+				usagerDTO.setSiteDTO(siteDTO);
+				List<UsagerDTO> usagerDTOs = usagerDAO.readByDTO(usagerDTO);
+				for (UsagerDTO usagerDTO2 : usagerDTOs) {
+					usagerDAO.delete(usagerDTO2, connection);
+				}
+
+				String query = "DELETE FROM site WHERE id=?";
+				try (PreparedStatement statement = connection
+						.prepareStatement(query)) {
+					statement.setInt(1, siteDTO.getId());
+
+					retour = statement.executeUpdate();
+				}
+				connection.commit();
+			} catch (Exception e) {
+				connection.rollback();
+				throw new RuntimeException(e);
 			}
+
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

@@ -1,5 +1,6 @@
 package fr.imie.DAO;
 
+import java.sql.Connection;
 import java.util.List;
 
 import fr.imie.DTO.UsagerDTO;
@@ -15,5 +16,7 @@ public interface IUsagerDAO {
 	UsagerDTO update (UsagerDTO usagerDTO);
 	
 	Integer delete(UsagerDTO usagerDTO);
+
+	Integer delete(UsagerDTO usagerDTO, Connection connection);
 
 }

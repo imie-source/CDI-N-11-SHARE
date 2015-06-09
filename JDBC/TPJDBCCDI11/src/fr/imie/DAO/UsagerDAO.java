@@ -22,15 +22,6 @@ import fr.imie.DTO.UsagerDTO;
  */
 public class UsagerDAO implements IUsagerDAO {
 
-	private ISiteDAO siteDAO;
-	
-	
-	
-	public UsagerDAO(ISiteDAO siteDAO) {
-		super();
-		this.siteDAO = siteDAO;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -48,19 +39,18 @@ public class UsagerDAO implements IUsagerDAO {
 				statement.setString(1, usagerDTO.getNom());
 				statement.setString(2, usagerDTO.getPrenom());
 				Date dateNaiss = null;
-				if (usagerDTO.getDateNaiss()!=null){
-					dateNaiss=new Date(usagerDTO.getDateNaiss().getTime());	
+				if (usagerDTO.getDateNaiss() != null) {
+					dateNaiss = new Date(usagerDTO.getDateNaiss().getTime());
 				}
 				statement.setDate(3, dateNaiss);
 				statement.setString(4, usagerDTO.getEmail());
 
-				if (usagerDTO.getSiteDTO()!=null){
+				if (usagerDTO.getSiteDTO() != null) {
 					statement.setInt(5, usagerDTO.getSiteDTO().getId());
-				}else{
+				} else {
 					statement.setNull(5, Types.INTEGER);
 				}
-				
-				
+
 				// System.out.format("nb de record inséré : %d\n", recordCount);
 
 				try (ResultSet resultSet = statement.executeQuery()) {
@@ -112,7 +102,7 @@ public class UsagerDAO implements IUsagerDAO {
 		List<UsagerDTO> retour = new ArrayList<UsagerDTO>();
 		try (Connection connection = ConnectionProvider.getInstance()
 				.provideConnection()) {
-			String query = "select id, nom, prenom, date_naissance, email, nb_connexion from usager ";
+			String query = "select id, nom, prenom, date_naissance, email, nb_connexion, site_id from usager ";
 			Boolean firstConstraint = true;
 			if (usagerDTO.getNom() != null) {
 				query = query.concat(firstConstraint ? "where" : "and").concat(
@@ -144,6 +134,11 @@ public class UsagerDAO implements IUsagerDAO {
 						" email like ?");
 				firstConstraint = false;
 			}
+			if (usagerDTO.getSiteDTO() != null) {
+				query = query.concat(firstConstraint ? "where" : "and").concat(
+						" site_id=?");
+				firstConstraint = false;
+			}
 
 			try (PreparedStatement preparedStatement = connection
 					.prepareStatement(query)) {
@@ -171,6 +166,10 @@ public class UsagerDAO implements IUsagerDAO {
 				if (usagerDTO.getEmail() != null) {
 					preparedStatement.setString(numParam++,
 							"%" + usagerDTO.getEmail() + "%");
+				}
+				if (usagerDTO.getSiteDTO() != null) {
+					preparedStatement.setInt(numParam++, usagerDTO
+							.getSiteDTO().getId());
 				}
 
 				try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -231,16 +230,28 @@ public class UsagerDAO implements IUsagerDAO {
 		Integer retour;
 		try (Connection connection = ConnectionProvider.getInstance()
 				.provideConnection()) {
-			String query = "DELETE FROM usager WHERE id=?";
-			try (PreparedStatement statement = connection
-					.prepareStatement(query)) {
-				statement.setInt(1, usagerDTO.getId());
-
-				retour = statement.executeUpdate();
-			}
+			retour = delete(usagerDTO, connection);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+		return retour;
+	}
+
+	@Override
+	public Integer delete(UsagerDTO usagerDTO, Connection connection) {
+		if(usagerDTO.getId()==18){
+			throw new RuntimeException(String.format("%s ne veut pas partir",usagerDTO.getNom()));
+		}
+		Integer retour = null;
+		String query = "DELETE FROM usager WHERE id=?";
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, usagerDTO.getId());
+
+			retour = statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
 		return retour;
 	}
 
@@ -253,9 +264,11 @@ public class UsagerDAO implements IUsagerDAO {
 		usagerDTO.setEmail(resultSet.getString("email"));
 		usagerDTO.setNbConnexion(resultSet.getInt("nb_connexion"));
 		Integer fkSite = resultSet.getInt("site_id");
-		if(resultSet.wasNull()){
-			fkSite=null;
+		if (resultSet.wasNull()) {
+			fkSite = null;
 		}
+		// TODO singleton sur la classe DAO
+		ISiteDAO siteDAO = new SiteDAO();
 		if (fkSite != null) {
 			SiteDTO siteDTO = new SiteDTO();
 			siteDTO.setId(fkSite);

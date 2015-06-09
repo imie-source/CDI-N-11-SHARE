@@ -10,7 +10,7 @@ public class Launcher {
 
 	public static void main(String[] args) {
 		ISiteDAO siteDAO = new SiteDAO();
-		IUsagerDAO usagerDAO = new UsagerDAO(siteDAO);
+		IUsagerDAO usagerDAO = new UsagerDAO();
 		Console usagerConsole = new Console(usagerDAO,siteDAO);
 		usagerConsole.start();
 	}
