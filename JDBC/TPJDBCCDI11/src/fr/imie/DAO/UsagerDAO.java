@@ -178,4 +178,62 @@ public class UsagerDAO implements IUsagerDAO {
 		return retour;
 
 	}
+
+	@Override
+	public UsagerDTO update(UsagerDTO usagerDTO) {
+		if(usagerDTO.getId()==null){
+			throw new IllegalArgumentException("id obligatoire pour update");
+		}
+		UsagerDTO usagerDTOUpdated = null;
+		try (Connection connection = ConnectionProvider.getInstance()
+				.provideConnection()) {
+			String query = "UPDATE usager "
+					+ "SET nom=?, prenom=?, date_naissance=?, email=?, nb_connexion=? "
+					+ "WHERE id=? returning id, nom, prenom, date_naissance, email, nb_connexion";
+			try (PreparedStatement statement = connection
+					.prepareStatement(query)) {
+				statement.setString(1, usagerDTO.getNom());
+				statement.setString(2, usagerDTO.getPrenom());
+				Date dateNaiss = usagerDTO.getDateNaiss() == null ? null
+						: new Date(usagerDTO.getDateNaiss().getTime());
+				statement.setDate(3, dateNaiss);
+				statement.setString(4, usagerDTO.getEmail());
+				if (usagerDTO.getNbConnexion() == null) {
+					statement.setNull(5, Types.INTEGER);
+				} else {
+					statement.setInt(5, usagerDTO.getNbConnexion());
+				}
+				statement.setInt(6, usagerDTO.getId());
+				System.out.println(statement.toString());
+				try (ResultSet resultSet = statement.executeQuery()) {
+					if (resultSet.next()) {
+						usagerDTOUpdated = buildDTO(resultSet);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+
+		return usagerDTOUpdated;
+
+	}
+
+	@Override
+	public Integer delete(UsagerDTO usagerDTO) {
+		Integer retour;
+		try (Connection connection = ConnectionProvider.getInstance()
+				.provideConnection()) {
+			String query = "DELETE FROM usager WHERE id=?";
+			try (PreparedStatement statement = connection
+					.prepareStatement(query)) {
+				statement.setInt(1, usagerDTO.getId());
+
+				retour = statement.executeUpdate();
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return retour;
+	}
 }

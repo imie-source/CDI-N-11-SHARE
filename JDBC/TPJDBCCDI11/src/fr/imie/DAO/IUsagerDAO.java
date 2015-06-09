@@ -11,5 +11,9 @@ public interface IUsagerDAO {
 	List<UsagerDTO> readAll();
 	
 	List<UsagerDTO> readByDTO(UsagerDTO usagerDTO);
+	
+	UsagerDTO update (UsagerDTO usagerDTO);
+	
+	Integer delete(UsagerDTO usagerDTO);
 
 }
