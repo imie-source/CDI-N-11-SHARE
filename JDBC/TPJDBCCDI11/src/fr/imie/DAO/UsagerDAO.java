@@ -5,7 +5,6 @@ package fr.imie.DAO;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +13,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.imie.DTO.SiteDTO;
 import fr.imie.DTO.UsagerDTO;
 
 /**
@@ -21,6 +21,15 @@ import fr.imie.DTO.UsagerDTO;
  *
  */
 public class UsagerDAO implements IUsagerDAO {
+
+	private ISiteDAO siteDAO;
+	
+	
+	
+	public UsagerDAO(ISiteDAO siteDAO) {
+		super();
+		this.siteDAO = siteDAO;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -32,16 +41,26 @@ public class UsagerDAO implements IUsagerDAO {
 		UsagerDTO usagerDTOInserted = null;
 		try (Connection connection = ConnectionProvider.getInstance()
 				.provideConnection()) {
-			String query = "INSERT INTO usager(nom, prenom, date_naissance, email)"
-					+ " VALUES (?, ?, ?, ?) returning id, nom, prenom, date_naissance, email, nb_connexion";
+			String query = "INSERT INTO usager(nom, prenom, date_naissance, email, site_id)"
+					+ " VALUES (?, ?, ?, ?, ?) returning id, nom, prenom, date_naissance, email, nb_connexion,site_id";
 			try (PreparedStatement statement = connection
 					.prepareStatement(query)) {
 				statement.setString(1, usagerDTO.getNom());
 				statement.setString(2, usagerDTO.getPrenom());
-				statement.setDate(3, new Date(usagerDTO.getDateNaiss()
-						.getTime()));
+				Date dateNaiss = null;
+				if (usagerDTO.getDateNaiss()!=null){
+					dateNaiss=new Date(usagerDTO.getDateNaiss().getTime());	
+				}
+				statement.setDate(3, dateNaiss);
 				statement.setString(4, usagerDTO.getEmail());
 
+				if (usagerDTO.getSiteDTO()!=null){
+					statement.setInt(5, usagerDTO.getSiteDTO().getId());
+				}else{
+					statement.setNull(5, Types.INTEGER);
+				}
+				
+				
 				// System.out.format("nb de record inséré : %d\n", recordCount);
 
 				try (ResultSet resultSet = statement.executeQuery()) {
@@ -81,18 +100,6 @@ public class UsagerDAO implements IUsagerDAO {
 			throw new RuntimeException(e);
 		}
 		return usagerDTOs;
-	}
-
-	private UsagerDTO buildDTO(ResultSet resultSet) throws SQLException {
-		UsagerDTO usagerDTO = new UsagerDTO();
-		usagerDTO.setId(resultSet.getInt("id"));
-		usagerDTO.setNom(resultSet.getString("nom"));
-		usagerDTO.setPrenom(resultSet.getString("prenom"));
-		usagerDTO.setDateNaiss(resultSet.getDate("date_naissance"));
-		usagerDTO.setEmail(resultSet.getString("email"));
-		usagerDTO.setNbConnexion(resultSet.getInt("nb_connexion"));
-		return usagerDTO;
-
 	}
 
 	/*
@@ -181,7 +188,7 @@ public class UsagerDAO implements IUsagerDAO {
 
 	@Override
 	public UsagerDTO update(UsagerDTO usagerDTO) {
-		if(usagerDTO.getId()==null){
+		if (usagerDTO.getId() == null) {
 			throw new IllegalArgumentException("id obligatoire pour update");
 		}
 		UsagerDTO usagerDTOUpdated = null;
@@ -235,5 +242,27 @@ public class UsagerDAO implements IUsagerDAO {
 			throw new RuntimeException(e);
 		}
 		return retour;
+	}
+
+	private UsagerDTO buildDTO(ResultSet resultSet) throws SQLException {
+		UsagerDTO usagerDTO = new UsagerDTO();
+		usagerDTO.setId(resultSet.getInt("id"));
+		usagerDTO.setNom(resultSet.getString("nom"));
+		usagerDTO.setPrenom(resultSet.getString("prenom"));
+		usagerDTO.setDateNaiss(resultSet.getDate("date_naissance"));
+		usagerDTO.setEmail(resultSet.getString("email"));
+		usagerDTO.setNbConnexion(resultSet.getInt("nb_connexion"));
+		Integer fkSite = resultSet.getInt("site_id");
+		if(resultSet.wasNull()){
+			fkSite=null;
+		}
+		if (fkSite != null) {
+			SiteDTO siteDTO = new SiteDTO();
+			siteDTO.setId(fkSite);
+			siteDTO = siteDAO.readByDTO(siteDTO).get(0);
+			usagerDTO.setSiteDTO(siteDTO);
+		}
+		return usagerDTO;
+
 	}
 }

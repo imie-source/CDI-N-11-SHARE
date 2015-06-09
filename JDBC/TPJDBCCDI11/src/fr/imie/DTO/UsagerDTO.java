@@ -17,6 +17,7 @@ public class UsagerDTO {
 	private Date dateNaiss;
 	private Integer nbConnexion;
 	private String email;
+	private SiteDTO siteDTO;
 	
 	public Integer getId() {
 		return id;
@@ -54,7 +55,11 @@ public class UsagerDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
+	public SiteDTO getSiteDTO() {
+		return siteDTO;
+	}
+	public void setSiteDTO(SiteDTO siteDTO) {
+		this.siteDTO = siteDTO;
+	}
 
 }
