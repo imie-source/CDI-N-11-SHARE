@@ -36,9 +36,23 @@ public class HelloworldServlet extends HttpServlet {
 		if (color == null) {
 			color = getInitParameter("color");
 		}
-		writer.write(String.format("<div style=\"color:%s;\">", color));
-		writer.write("HELLO WORLD");
-		writer.write("</div>");
+
+		String template = "<!doctype html>" + "<html lang=\"fr\">" + "<head>"
+				+ "<meta charset=\"utf-8\">"
+				+ "<title>HELLO</title>" + "</head>" + "<body>"
+				+ "%s" + "</body>" + "</html>";
+		String content = "<div style=\"color:%s;font-size:40px;\">" + "HELLO WORLD" + "</div>";
+
+		String links = "<div>" + "<a href=\"./HelloworldServlet?color=grey\">"
+				+ "gris" + "</a>" + "</div>" + "<div>"
+				+ "<a href=\"./HelloworldServlet?color=magenta\">" + "magenta"
+				+ "</a>" + "</div>";
+
+		content = String.format(content, color);
+
+		String page = String.format(template, content + links);
+
+		writer.write(page);
 	}
 
 	/**
