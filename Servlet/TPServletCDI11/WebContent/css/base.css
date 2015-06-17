@@ -1,23 +1,73 @@
 @CHARSET "UTF-8";
-body{
+
+body {
 	font-size: 2em;
 }
 
-label{
-	width: 200px;
-	display : inline-block;
+label {
+	width: 400px;
+	display: inline-block;
 	text-align: right;
 }
 
-input{
-	display : inline-block;
+input {
+	display: inline-block;
+	font-size: 100%;
+	width: 20em;
+	padding: 2px;
 }
 
-#container{
+.container {
 	text-align: center;
 }
 
-form {
-	margin: auto;
-	display : inline;
+.content {
+	display: inline-block;
+	border-style: solid;
+	border-radius: 10px;
+}
+
+form div {
+	margin: 5px;
+	padding: 5px;
+}
+
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+td {
+	padding: 10px;
+	border-top-style: solid;
+}
+
+tr:nth-child(even) {
+	background-color: #bbb;
+}
+
+th {
+	padding: 10px;
+	background-color: #03082C;
+	color: white;
+}
+
+#menuContainer {
+	background-color: #bbb;
+	margin-bottom: 10px;
+}
+
+.menu {
+	display: inline-block;
+	padding: 20px;
+	size: 3em;
+	color :white;
+}
+
+.menu:hover {
+	color: black;
+}
+
+#menu1 {
+	background-color: #A4B937;
 }

@@ -1,6 +1,7 @@
 package fr.imie;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,15 +34,17 @@ public class UsagerServletFormView extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		UsagerDTO usagerDTO = (UsagerDTO) request.getAttribute("usager");
 
-		String template = "<!doctype html>"
+		String templateDebut = "<!doctype html>"
 				+ "<html lang=\"fr\">"
 				+ "<head>"
 				+ "<meta charset=\"utf-8\">"
 				+ "<title>HELLO</title>"
 				+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/base.css\"> "
-				+ "</head>" + "<body>" + "%s" + "</body>" + "</html>";
+				+ "</head>" + "<body>";
 
-		String form = "<div id=\"container\"><form>%s</form></div>";
+		String templateFin = "</body>" + "</html>";
+
+		String form = "<div class=\"container\"><div class=\"content\"><form>%s</form></div></div>";
 
 		String nom = "<div><label for=\"nomInput\">nom : </label><input id=\"nomInput\" type=\"text\" value=\"%s\"/></div>";
 		String prenom = "<div><label for=\"prenomInput\">prenom : </label><input id=\"prenomInput\" type=\"text\" value=\"%s\"/></div>";
@@ -56,10 +59,13 @@ public class UsagerServletFormView extends HttpServlet {
 		passw = String.format(passw, "");
 
 		form = String.format(form, nom + prenom + mail + dateNais + passw);
-
-		template = String.format(template, form);
-
-		response.getWriter().write(template);
+		
+		PrintWriter writer = response.getWriter();
+		writer.write(templateDebut);
+		request.getRequestDispatcher("/MenuServlet").include(request, response);
+		writer.write(form);
+		writer.write(templateFin);
+		
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package fr.imie;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -34,14 +35,15 @@ public class UsagersServletView extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		List<UsagerDTO> dtos = (List<UsagerDTO>) request.getSession()
 				.getAttribute("usagers");
-		String template = "<!doctype html>" + "<html lang=\"fr\">" + "<head>"
+		String templateDebut = "<!doctype html>" + "<html lang=\"fr\">" + "<head>"
 				+ "<meta charset=\"utf-8\">" + "<title>Usagers</title>"
 				+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/base.css\"> " + "</head>"
-				+ "<body>" + "%s" + "</body>" + "</html>";
+				+ "<body>";
+				String templateFin = "</body>" + "</html>";
 
-		String table = "<table><tr><th>nom</th><th>prenom</th><th>actions</th></tr>%s</table>";
+		String table = "<div class=\"container\"><div class=\"content\"><table><tr><th>nom</th><th>prenom</th><th>actions</th></tr>%s</table></div></div>";
 
-		String row = "<tr><td>%s</td><td>%s</td><td><a href=\"UsagerServletFormControler?numLigne=%d\">naviguer</a></td></tr>";
+		String row = "<tr><td>%s</td><td>%s</td><td><a href=\"UsagerServletFormControler?numLigne=%d\"><img src=\"images/view.png\"/></a></td></tr>";
 
 		String rows = "";
 		Integer cpt = 1;
@@ -52,9 +54,12 @@ public class UsagersServletView extends HttpServlet {
 
 		table = String.format(table, rows);
 
-		template = String.format(template, table);
-
-		response.getWriter().write(template);
+		PrintWriter writer = response.getWriter();
+		writer.write(templateDebut);
+		request.getRequestDispatcher("/MenuServlet").include(request, response);
+		writer.write(table);
+		writer.write(templateFin);
+		
 
 	}
 
