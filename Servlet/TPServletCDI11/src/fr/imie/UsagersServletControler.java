@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.imie.DAO.UsagerDAO;
 import fr.imie.DTO.UsagerDTO;
@@ -55,7 +56,8 @@ public class UsagersServletControler extends HttpServlet {
 		
 		List<UsagerDTO> dtos = new UsagerDAO().readAll();
 		
-		request.setAttribute("usagers",dtos);
+		HttpSession session = request.getSession();
+		session.setAttribute("usagers",dtos);
 		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/UsagersServletView");
 		requestDispatcher.forward(request, response);

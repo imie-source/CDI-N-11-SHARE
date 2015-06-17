@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+body{
+	font-size: 2em;
+}
+
+label{
+	width: 200px;
+	display : inline-block;
+	text-align: right;
+}
+
+input{
+	display : inline-block;
+}
+
+#container{
+	text-align: center;
+}
+
+form {
+	margin: auto;
+	display : inline;
+}
