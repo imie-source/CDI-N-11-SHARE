@@ -1,6 +1,7 @@
 package fr.imie;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +28,11 @@ public class MenuServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String menu = "<div id=\"menuContainer\"><a href=\"UsagersServletControler\"><div id=\"menu1\" class=\"menu\">Usagers</div></a></div>";
+		String erreur = (String) request.getSession().getAttribute("error");
+		if (erreur!=null){
+			menu=menu+String.format("<div><span>%s</span></div>",erreur);
+		}
+		request.getSession().removeAttribute("error");
 		response.getWriter().write(menu);
 	}
 

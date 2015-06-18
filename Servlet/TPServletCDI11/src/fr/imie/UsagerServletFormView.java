@@ -44,28 +44,40 @@ public class UsagerServletFormView extends HttpServlet {
 
 		String templateFin = "</body>" + "</html>";
 
-		String form = "<div class=\"container\"><div class=\"content\"><form>%s</form></div></div>";
+		String form = "<div class=\"container\"><div class=\"content\"><form method=\"POST\">%s"
+				+ "<div></div>" + "%s"+ "</form>"  + "</div></div>";
+		String create = "<input type=\"submit\" name=\"create\"/>";
+		String edit = "<input type=\"submit\" name=\"edit\"/>";
 
-		String nom = "<div><label for=\"nomInput\">nom : </label><input id=\"nomInput\" type=\"text\" value=\"%s\"/></div>";
-		String prenom = "<div><label for=\"prenomInput\">prenom : </label><input id=\"prenomInput\" type=\"text\" value=\"%s\"/></div>";
-		String mail = "<div><label for=\"mailInput\">mail : </label><input id=\"mailInput\" type=\"text\" value=\"%s\"/></div>";
-		String dateNais = "<div><label for=\"dateNaissInput\">date de naissance : </label><input id=\"dateNaissInput\" type=\"date\" value=\"%s\"/></div>";
-		String passw = "<div><label for=\"passwInput\">mot de passe : </label><input id=\"passwInput\" type=\"password\" value=\"%s\"/></div>";
+		String numLigne = "<input  type=\"hidden\" value=\"%s\"/ name=\"numLigne\">";
+		String nom = "<div><label for=\"nomInput\">nom : </label><input id=\"nomInput\" type=\"text\" value=\"%s\"/ name=\"nom\"></div>";
+		String prenom = "<div><label for=\"prenomInput\">prenom : </label><input id=\"prenomInput\" type=\"text\" value=\"%s\" name=\"prenom\"/></div>";
+		String mail = "<div><label for=\"mailInput\">mail : </label><input id=\"mailInput\" type=\"text\" value=\"%s\" name=\"mail\"/></div>";
+		String dateNais = "<div><label for=\"dateNaissInput\">date de naissance : </label><input id=\"dateNaissInput\" type=\"date\" value=\"%s\" name=\"dateNaiss\"/></div>";
+		String passw = "<div><label for=\"passwInput\">mot de passe : </label><input id=\"passwInput\" type=\"password\" value=\"%s\" name=\"password\"/></div>";
 
-		nom = String.format(nom, usagerDTO.getNom());
-		prenom = String.format(prenom, usagerDTO.getPrenom());
-		mail = String.format(mail, usagerDTO.getEmail());
-		dateNais = String.format(dateNais, usagerDTO.getDateNaiss());
+		numLigne = String.format(
+				numLigne,
+				request.getParameterValues("numLigne") == null ? "" : request
+						.getParameterValues("numLigne"));
+		nom = String.format(nom, usagerDTO == null ? "" : usagerDTO.getNom());
+		prenom = String.format(prenom,
+				usagerDTO == null ? "" : usagerDTO.getPrenom());
+		mail = String.format(mail,
+				usagerDTO == null ? "" : usagerDTO.getEmail());
+		dateNais = String.format(dateNais,
+				usagerDTO == null ? "" : usagerDTO.getDateNaiss());
 		passw = String.format(passw, "");
 
-		form = String.format(form, nom + prenom + mail + dateNais + passw);
-		
+		form = String.format(form, numLigne + nom + prenom + mail + dateNais
+				+ passw, usagerDTO == null ? create : edit);
+
 		PrintWriter writer = response.getWriter();
 		writer.write(templateDebut);
 		request.getRequestDispatcher("/MenuServlet").include(request, response);
 		writer.write(form);
 		writer.write(templateFin);
-		
+
 	}
 
 	/**

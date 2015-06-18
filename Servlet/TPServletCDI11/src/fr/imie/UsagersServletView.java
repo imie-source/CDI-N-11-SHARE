@@ -35,21 +35,31 @@ public class UsagersServletView extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		List<UsagerDTO> dtos = (List<UsagerDTO>) request.getSession()
 				.getAttribute("usagers");
-		String templateDebut = "<!doctype html>" + "<html lang=\"fr\">" + "<head>"
-				+ "<meta charset=\"utf-8\">" + "<title>Usagers</title>"
-				+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/base.css\"> " + "</head>"
-				+ "<body>";
-				String templateFin = "</body>" + "</html>";
+		String templateDebut = "<!doctype html>"
+				+ "<html lang=\"fr\">"
+				+ "<head>"
+				+ "<meta charset=\"utf-8\">"
+				+ "<title>Usagers</title>"
+				+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/base.css\"> "
+				+ "</head>" + "<body>";
+		String templateFin = "</body>" + "</html>";
 
 		String table = "<div class=\"container\"><div class=\"content\"><table><tr><th>nom</th><th>prenom</th><th>actions</th></tr>%s</table></div></div>";
 
-		String row = "<tr><td>%s</td><td>%s</td><td><a href=\"UsagerServletFormControler?numLigne=%d\"><img src=\"images/view.png\"/></a></td></tr>";
+		String creation = "<div><form method=\"POST\"><input type=\"submit\" class=\"icon createIcon\" name=\"create\"/></form></div>";
+		String row = "<form action=\"UsagersServletControler\" method=\"POST\"><tr><td>%s</td>"
+				+ "<td>%s</td>"
+				+ "<td><input type=\"hidden\" value=\"%d\" name=\"numLigne\"/>"
+				+ "<input type=\"submit\" name=\"edit\" class=\"icon editIcon\"/>"
+				+ "<input type=\"submit\" name=\"delete\" class=\"icon delIcon\"/>"
+				+ "</td></tr>"
+				+ "</form>";
 
 		String rows = "";
 		Integer cpt = 1;
 		for (UsagerDTO usagerDTO : dtos) {
 			rows = rows.concat(String.format(row, usagerDTO.getNom(),
-					usagerDTO.getPrenom(), cpt++));
+					usagerDTO.getPrenom(), cpt, cpt++));
 		}
 
 		table = String.format(table, rows);
@@ -57,9 +67,8 @@ public class UsagersServletView extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		writer.write(templateDebut);
 		request.getRequestDispatcher("/MenuServlet").include(request, response);
-		writer.write(table);
+		writer.write(table+creation);
 		writer.write(templateFin);
-		
 
 	}
 
