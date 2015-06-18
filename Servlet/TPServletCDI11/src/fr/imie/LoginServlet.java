@@ -1,7 +1,7 @@
 package fr.imie;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,19 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.imie.DAO.UsagerDAO;
 import fr.imie.DTO.UsagerDTO;
 
 /**
- * Servlet implementation class UsagersServletView
+ * Servlet implementation class Home
  */
-@WebServlet("/UsagersServletView")
-public class UsagersServletView extends HttpServlet {
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public UsagersServletView() {
+	public LoginServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -33,44 +34,29 @@ public class UsagersServletView extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		List<UsagerDTO> dtos = (List<UsagerDTO>) request.getSession()
-				.getAttribute("usagers");
 		String templateDebut = "<!doctype html>"
 				+ "<html lang=\"fr\">"
 				+ "<head>"
 				+ "<meta charset=\"utf-8\">"
-				+ "<title>Usagers</title>"
+				+ "<title>HELLO</title>"
 				+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/base.css\"> "
 				+ "</head>" + "<body>";
+		String form = "<div class=\"container\"><div class=\"content\"><form method=\"POST\">%s"
+				+ "<div></div>" + "%s" + "</form>" + "</div></div>";
+		String loginButton = "<input type=\"submit\" name=\"login\"/>";
+
 		String templateFin = "</body>" + "</html>";
 
-		String table = "<div class=\"container\"><div class=\"content\">"
-				+ "<div><form method=\"POST\"><input type=\"submit\" class=\"icon createIcon\" name=\"create\"/></form></div>"
-				+ "<table><tr><th>nom</th><th>prenom</th><th>actions</th></tr>%s</table>"
-				+ "</div></div>";
+		String login = "<div><label for=\"loginInput\">login : </label><input id=\"loginInput\" type=\"text\" value=\"\"/ name=\"login\"></div>";
+		String passw = "<div><label for=\"passwInput\">mot de passe : </label><input id=\"passwInput\" type=\"text\" value=\"\" name=\"passw\"/></div>";
 
-		String row = "<tr><form action=\"UsagersServletControler\" method=\"POST\"><td>%s</td>"
-				+ "<td>%s</td>"
-				+ "<td><input type=\"hidden\" value=\"%d\" name=\"numLigne\"/>"
-				+ "<input type=\"submit\" name=\"edit\" class=\"icon editIcon\"/>"
-				+ "<input type=\"submit\" name=\"delete\" class=\"icon delIcon\"/>"
-				+ "</td></tr>" + "</form>";
+		form = String.format(form, login + passw, loginButton);
 
-		String rows = "";
-		Integer cpt = 1;
-		for (UsagerDTO usagerDTO : dtos) {
-			rows = rows.concat(String.format(row, usagerDTO.getNom(),
-					usagerDTO.getPrenom(), cpt, cpt++));
-		}
-
-		table = String.format(table, rows);
-
-		PrintWriter writer = response.getWriter();
+		Writer writer = response.getWriter();
 		writer.write(templateDebut);
 		request.getRequestDispatcher("/MenuServlet").include(request, response);
-		writer.write(table);
+		writer.write(form);
 		writer.write(templateFin);
-
 	}
 
 	/**
@@ -79,7 +65,19 @@ public class UsagersServletView extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String login = request.getParameter("login");
+		String passw = request.getParameter("passw");
+		UsagerDAO usagerDAO = new UsagerDAO();
+		UsagerDTO searchedUsager = new UsagerDTO();
+		searchedUsager.setNom(login);
+		List<UsagerDTO> dtos = usagerDAO.readByDTO(searchedUsager);
+		if (dtos.size()>0){
+			request.getSession().setAttribute("connectedUsager", dtos.get(0));
+			response.sendRedirect("HomeServlet");
+		}else{
+			response.sendRedirect("LoginServlet");
+		}
+
 	}
 
 }

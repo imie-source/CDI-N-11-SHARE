@@ -53,17 +53,26 @@ th {
 }
 
 .icon{
-	width : 40px;
-	height: 40px;
 	background-size : 40px 40px;
+	width: 40px;
+	height: 40px;
+	background-repeat: no-repeat;
+	background-color : transparent;
+	border: none;
+	color: transparent;
+	margin: 5px;
 }
 
-.viewIcon{
-	background:url(../images/Search-Find-128.png) no-repeat;
+.editIcon{
+	background-image:url(../images/Search-Find-128.png);
 }
 
 .delIcon{
-	background:url(../images/Garbage-Closed-128.png) no-repeat;
+	background-image:url(../images/Garbage-Closed-128.png);
+}
+
+.createIcon{
+	background-image:url(../images/Add-New-128.png);
 }
 
 #menuContainer {
@@ -80,6 +89,9 @@ th {
 
 .menu:hover {
 	color: black;
+}
+#menu0 {
+	background-color: green;
 }
 
 #menu1 {
