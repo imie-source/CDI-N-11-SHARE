@@ -1,0 +1,14 @@
+<div id="menuContainer">
+	<a href="home"><div id="menu0" class="menu">Home</div></a><a
+		href="usagerList"><div id="menu1" class="menu">Usagers</div></a><a
+		href="deconnexion"><div id="menu9" class="menu">Deconnexion</div></a>
+</div>
+<div>
+	<%
+		if (request.getAttribute("error") != null) {
+	%>
+	<span> <%=request.getAttribute("error")%></span>
+	<%
+		}
+	%>
+</div>
