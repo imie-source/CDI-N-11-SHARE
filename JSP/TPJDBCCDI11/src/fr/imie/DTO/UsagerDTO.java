@@ -5,11 +5,14 @@ package fr.imie.DTO;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
+
 /**
  * @author imie
  *
  */
-public class UsagerDTO {
+public class UsagerDTO implements HttpSessionBindingListener{
 
 	private Integer id;
 	private String nom;
@@ -67,6 +70,16 @@ public class UsagerDTO {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	@Override
+	public void valueBound(HttpSessionBindingEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 
