@@ -47,21 +47,42 @@ public class SecurityFilter implements Filter {
 		UsagerDTO connectedUsager = (UsagerDTO) httpRequest.getSession()
 				.getAttribute("connectedUsager");
 		Boolean securedResource = true;
-		if (httpRequest.getRequestURI().contains("Login")) {
+		String url = httpRequest.getRequestURI();
+		if (httpRequest.getQueryString()!=null){
+			url = url.concat("?").concat(httpRequest.getQueryString());
+		}
+		
+		if (url.contains("Login")) {
 			securedResource = false;
 		}
-		if (httpRequest.getRequestURI().contains("css")) {
+		if (url.contains("css")) {
 			securedResource = false;
 		}
-		if (httpRequest.getRequestURI().contains("png")) {
+		if (url.contains("png")) {
 			securedResource = false;
 		}
 
+		
+		
 		if (securedResource == false || connectedUsager != null) {
 			chain.doFilter(request, response);
 		} else {
+			httpRequest.getSession().setAttribute("askedResource",url);
 			httpResponse.sendRedirect("LoginServlet");
 		}
+		
+		
+		UsagerDTO recentConnectedUsager = (UsagerDTO) httpRequest.getSession().getAttribute("connectedUsager");
+		if(connectedUsager==null && recentConnectedUsager!=null){
+			
+			String askedResource = (String) httpRequest.getSession().getAttribute("askedResource");
+			if (askedResource!=null){
+			httpResponse.sendRedirect(askedResource);
+			}else{
+				httpResponse.sendRedirect("HomeServlet");
+			}
+		}
+	
 	}
 
 	/**

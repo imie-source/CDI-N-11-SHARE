@@ -70,11 +70,16 @@ public class LoginServlet extends HttpServlet {
 		UsagerDAO usagerDAO = new UsagerDAO();
 		UsagerDTO searchedUsager = new UsagerDTO();
 		searchedUsager.setNom(login);
-		List<UsagerDTO> dtos = usagerDAO.readByDTO(searchedUsager);
-		if (dtos.size()>0){
-			request.getSession().setAttribute("connectedUsager", dtos.get(0));
-			response.sendRedirect("HomeServlet");
-		}else{
+		searchedUsager.setPassword(passw);
+		UsagerDTO dto = null;
+		try {
+			dto = usagerDAO.getAuthentifiedUsager(searchedUsager);
+		} catch (IllegalArgumentException e) {
+			request.getSession().setAttribute("error", e.getMessage());
+		}
+		if (dto != null) {
+			request.getSession().setAttribute("connectedUsager", dto);
+		} else {
 			response.sendRedirect("LoginServlet");
 		}
 

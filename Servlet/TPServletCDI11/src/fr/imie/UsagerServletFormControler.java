@@ -77,6 +77,7 @@ public class UsagerServletFormControler extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		usagerDTO.setPassword(request.getParameter("password"));
 
 		UsagerDAO usagerDAO = new UsagerDAO();
 		
