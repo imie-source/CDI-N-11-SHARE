@@ -1,0 +1,99 @@
+@CHARSET "UTF-8";
+
+body {
+	font-size: 2em;
+}
+
+label {
+	width: 400px;
+	display: inline-block;
+	text-align: right;
+}
+
+input {
+	display: inline-block;
+	font-size: 100%;
+	width: 20em;
+	padding: 2px;
+}
+
+.container {
+	text-align: center;
+}
+
+.content {
+	display: inline-block;
+	border-style: solid;
+	border-radius: 10px;
+}
+
+form div {
+	margin: 5px;
+	padding: 5px;
+}
+
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+td {
+	padding: 10px;
+	border-top-style: solid;
+}
+
+tr:nth-child(even) {
+	background-color: #bbb;
+}
+
+th {
+	padding: 10px;
+	background-color: #03082C;
+	color: white;
+}
+
+.icon{
+	background-size : 40px 40px;
+	width: 40px;
+	height: 40px;
+	background-repeat: no-repeat;
+	background-color : transparent;
+	border: none;
+	color: transparent;
+	margin: 5px;
+}
+
+.editIcon{
+	background-image:url(../images/Search-Find-128.png);
+}
+
+.delIcon{
+	background-image:url(../images/Garbage-Closed-128.png);
+}
+
+.createIcon{
+	background-image:url(../images/Add-New-128.png);
+}
+
+#menuContainer {
+	background-color: #bbb;
+	margin-bottom: 10px;
+}
+
+.menu {
+	display: inline-block;
+	padding: 20px;
+	size: 3em;
+	color :white;
+}
+
+.menu:hover {
+	color: black;
+}
+#menu0 {
+	background-color: green;
+}
+
+#menu1 {
+	background-color: #A4B937;
+}
