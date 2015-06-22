@@ -1,18 +1,31 @@
 <%@page import="fr.imie.DTO.UsagerDTO"%>
 <div id="menuContainer">
 	<a href="home"><div id="menu0" class="menu">Home</div></a><a
-		href="usagerList"><div id="menu1" class="menu">Usagers</div></a><a
-		href="deconnexion"><div id="menu9" class="menu">Deconnexion</div></a>
-	<div class="menu">
-		<%=application.getAttribute("connectionCount")%></div>
+		href="usagerList"><div id="menu1" class="menu">Usagers</div></a>
 
 
-	<div class="menu">
-		<%
-			UsagerDTO usagerDTOConnected = (UsagerDTO) session
-					.getAttribute("connectedUsager");
-		%><%=usagerDTOConnected == null ? "" : usagerDTOConnected
-					.getNom()%></div>
+
+	<%
+		UsagerDTO usagerDTOConnected = (UsagerDTO) session
+				.getAttribute("connectedUsager");
+		if (usagerDTOConnected != null) {
+	%>
+	<a href="deconnexion">
+		<div id="menu9" class="menu menuRight">Deconnexion</div>
+	</a>
+	<div class="menu menuRight"><%=usagerDTOConnected.getNom()%></div>
+	<%
+		}
+	%>
+	<%
+		Integer connectionCount = (Integer)application
+				.getAttribute("connectionCount");
+		if (connectionCount != null) {
+	%>
+	<div class="menu menuRight"><%=application.getAttribute("connectionCount")%></div>
+	<%
+		}
+	%>
 </div>
 
 

@@ -27,7 +27,7 @@ public class DeconnexionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().removeAttribute("connectedUsager");
-		response.sendRedirect("HomeServlet");
+		response.sendRedirect("home");
 	}
 
 	/**

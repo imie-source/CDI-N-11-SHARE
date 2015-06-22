@@ -87,8 +87,12 @@ th {
 	color :white;
 }
 
-.menu:hover {
-	color: black;
+.menuRight {
+	float: right;
+}
+
+a .menu:hover {
+	color: #ccc;
 }
 #menu0 {
 	background-color: green;
@@ -96,4 +100,8 @@ th {
 
 #menu1 {
 	background-color: #A4B937;
+}
+
+#menu9 {
+	background-color: #003300;
 }

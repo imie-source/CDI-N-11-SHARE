@@ -10,49 +10,45 @@
 <link rel="stylesheet" type="text/css" href="css/base.css">
 <%!SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");%>
 </head>
+<jsp:useBean id="usager" class="fr.imie.DTO.UsagerDTO" scope="request"></jsp:useBean>
+<%-- <%Integer numLigne = (Integer)request.getAttribute("numLigne"); %> --%>
 <body>
 	<%@ include file="menu.jspf"%>
-	<%
+	<%-- <%
 		UsagerDTO usagerDTO = (UsagerDTO) request.getAttribute("usager");
-	%>
+	%> --%>
 	<div class="container">
 		<div class="content">
 			<form method="POST">
 				<div>
-					<input type="hidden"
-						value="<%=request.getAttribute("numLigne") != null ? request
-					.getAttribute("numLigne") : ""%>"
-						name="numLigne">
+					<input type="hidden" value="${numLigne}" />
 					<div>
 						<label for="nomInput">nom : </label><input id="nomInput"
-							type="text" value="<%=usagerDTO == null ? "" : usagerDTO.getNom()%>"
-							name="nom">
+							type="text" value="${usager.nom}" />
 					</div>
 					<div>
 						<label for="prenomInput">prenom : </label><input id="prenomInput"
-							type="text"
-							value="<%=usagerDTO == null ? "" : usagerDTO.getPrenom()%>"
-							name="prenom" />
+							type="text" value="${usager.prenom}" name="prenom" />
 					</div>
 					<div>
 						<label for="mailInput">mail : </label><input id="mailInput"
-							type="text" value="<%=usagerDTO == null ? "" : usagerDTO.getEmail()%>"
-							name="mail" />
+							type="text" value="${usager.email}" name="mail" />
 					</div>
 					<div>
 						<label for="dateNaissInput">date de naissance : </label><input
 							id="dateNaissInput" type="date"
-							value="<%=usagerDTO == null || usagerDTO.getDateNaiss() == null ? ""
-					: simpleDateFormat.format(usagerDTO.getDateNaiss())%>"
+							value="<%=usager == null || usager.getDateNaiss() == null ? ""
+					: simpleDateFormat.format(usager.getDateNaiss())%>"
 							name="dateNaiss" />
 					</div>
 					<div>
 						<label for="passwInput">mot de passe : </label><input
-							id="passwInput" type="password"
-							value="<%=usagerDTO == null ? "" : usagerDTO.getPassword()%>"
+							id="passwInput" type="password" value="${usager.password}"
 							name="password" />
 					</div>
 				</div>
+				<input type="submit"
+					value="<%=usager.getId()!= null ? "modifier" : "créer"%>" />
 			</form>
 		</div>
 	</div>
