@@ -1,7 +1,7 @@
-<%@page import="fr.imie.DTO.UsagerDTO"%>
-<%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,7 +11,7 @@
 
 </head>
 <body>
-	<%@ include file="menu.jspf"%>
+	<c:import url="/WEB-INF/menu.jsp" />
 	<div class="container">
 		<div class="content">
 			<div>
@@ -25,24 +25,18 @@
 					<th>prenom</th>
 					<th>actions</th>
 				</tr>
-				<%
-					List<UsagerDTO> dtos = (List<UsagerDTO>) session
-							.getAttribute("usagers");
-				    Integer cpt=1;
-					for (UsagerDTO usagerDTO : dtos) {
-				%>
-				<tr>
-					<form method="POST">
-					<td><%= usagerDTO.getNom()%></td>
-					<td><%= usagerDTO.getPrenom()%></td>
-					<td><input type="hidden" value="<%=cpt++%>" name="numLigne" /><input
-						type="submit" name="edit" class="icon editIcon" /><input
-						type="submit" name="delete" class="icon delIcon" /></td>
-					</form>
-				</tr>
-				<%
-					}
-				%>
+				<c:forEach items="${usagers}" var="usager" varStatus="loopStatus">
+					<tr>
+						<form method="POST">
+							<td>${usager.nom}</td>
+							<td>${usager.prenom}</td>
+							<td><input type="hidden" value="${loopStatus.index+1}"
+								name="numLigne" /><input type="submit" name="edit"
+								class="icon editIcon" /><input type="submit" name="delete"
+								class="icon delIcon" /></td>
+						</form>
+					</tr>
+				</c:forEach>
 			</table>
 		</div>
 	</div>

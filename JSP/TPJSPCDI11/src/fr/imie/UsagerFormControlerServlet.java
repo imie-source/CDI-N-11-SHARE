@@ -86,7 +86,7 @@ public class UsagerFormControlerServlet extends HttpServlet {
 		} else if (request.getParameter("edit") != null) {
 			usagerDAO.update(usagerDTO);
 		}
-		response.sendRedirect("UsagersServletControler");
+		response.sendRedirect("usagerList");
 
 		// TODO Auto-generated method stub
 	}
