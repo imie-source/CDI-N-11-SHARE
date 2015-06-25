@@ -5,7 +5,7 @@ import java.util.List;
 
 import fr.imie.DTO.UsagerDTO;
 
-public interface IUsagerService {
+public interface IUsagesService {
 
 	UsagerDTO ajouter(UsagerDTO usagerDTO);
 

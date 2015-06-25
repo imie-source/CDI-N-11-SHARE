@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.imie.DTO.UsagerDTO;
-import fr.imie.usages.IUsagerService;
-import fr.imie.usages.UsagerService;
+import fr.imie.factory.IFactory;
+import fr.imie.usages.IUsagesService;
 
 /**
  * Servlet implementation class UsagerServletFormControler
@@ -79,13 +79,17 @@ public class UsagerFormControlerServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		usagerDTO.setPassword(request.getParameter("password"));
-
-		IUsagerService usagerService = new UsagerService();
+		//récupération de la factoty créé par FactoryListener
+		IFactory factory = (IFactory) request.getServletContext().getAttribute(
+				"factory");
+		//Utilisation de la Factory pour récupérer le composant necessaire
+		IUsagesService usagesService = factory.createUsagesService();
+		
 
 		if (request.getParameter("create") != null) {
-			usagerService.ajouter(usagerDTO);
+			usagesService.ajouter(usagerDTO);
 		} else if (request.getParameter("edit") != null) {
-			usagerService.update(usagerDTO);
+			usagesService.update(usagerDTO);
 		}
 		response.sendRedirect("usagerList");
 

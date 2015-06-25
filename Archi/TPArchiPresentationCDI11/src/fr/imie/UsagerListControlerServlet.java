@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.imie.DTO.UsagerDTO;
-import fr.imie.usages.IUsagerService;
-import fr.imie.usages.UsagerService;
+import fr.imie.factory.IFactory;
+import fr.imie.usages.IUsagesService;
 
 /**
  * Servlet implementation class UsagersServletControler
@@ -36,27 +36,13 @@ public class UsagerListControlerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// UsagerDTO usagerDTO1 = new UsagerDTO();
-		// usagerDTO1.setNom("Bon");
-		// usagerDTO1.setPrenom("Jean");
-		// UsagerDTO usagerDTO2 = new UsagerDTO();
-		// usagerDTO2.setNom("Sonsec");
-		// usagerDTO2.setPrenom("Sofie");
-		// UsagerDTO usagerDTO3 = new UsagerDTO();
-		// usagerDTO3.setNom("Emploi");
-		// usagerDTO3.setPrenom("Paul");
-		// UsagerDTO usagerDTO4 = new UsagerDTO();
-		// usagerDTO4.setNom("Ochon");
-		// usagerDTO4.setPrenom("Paul");
-		//
-		// List<UsagerDTO> dtos = new ArrayList<UsagerDTO>();
-		// dtos.add(usagerDTO1);
-		// dtos.add(usagerDTO2);
-		// dtos.add(usagerDTO3);
-		// dtos.add(usagerDTO4);
-		//
-		IUsagerService usagerService = new UsagerService();
-		List<UsagerDTO> dtos = usagerService.readAll();
+		//récupération de la factoty créé par FactoryListener
+		IFactory factory = (IFactory) request.getServletContext().getAttribute(
+				"factory");
+		//Utilisation de la Factory pour récupérer le composant necessaire
+		IUsagesService usagesService = factory.createUsagesService();
+	
+		List<UsagerDTO> dtos = usagesService.readAll();
 
 		HttpSession session = request.getSession();
 		session.setAttribute("usagers", dtos);
@@ -79,9 +65,13 @@ public class UsagerListControlerServlet extends HttpServlet {
 			List<UsagerDTO> usagers = (List<UsagerDTO>) request.getSession()
 					.getAttribute("usagers");
 			UsagerDTO dto = usagers.get(numLigneInteger - 1);
-			IUsagerService usagerService = new UsagerService();
+			//récupération de la factoty créé par FactoryListener
+			IFactory factory = (IFactory) request.getServletContext().getAttribute(
+					"factory");
+			//Utilisation de la Factory pour récupérer le composant necessaire
+			IUsagesService usagesService = factory.createUsagesService();
 			try {
-				usagerService.delete(dto);	
+				usagesService.delete(dto);	
 			} catch (Exception e) {
 				request.setAttribute("error", e.getMessage());
 			}

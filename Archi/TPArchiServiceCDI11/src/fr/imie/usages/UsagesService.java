@@ -4,15 +4,15 @@ import java.sql.Connection;
 import java.util.List;
 
 import fr.imie.DAO.IUsagerDAO;
-import fr.imie.DAO.UsagerDAO;
 import fr.imie.DTO.UsagerDTO;
+import fr.imie.factory.IFactory;
 
-public class UsagerService implements IUsagerService {
+public class UsagesService implements IUsagesService {
 
 	IUsagerDAO usagerDAO;
 	
-	public UsagerService() {
-		usagerDAO = new UsagerDAO();
+	public UsagesService(IFactory factory) {
+		usagerDAO = factory.createUsagerDAO();
 	}
 
 	@Override

@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.imie.DTO.UsagerDTO;
-import fr.imie.usages.IUsagerService;
-import fr.imie.usages.UsagerService;
+import fr.imie.factory.IFactory;
+import fr.imie.usages.IUsagesService;
 
 /**
  * Servlet implementation class Home
@@ -44,13 +44,17 @@ public class LoginServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String login = request.getParameter("login");
 		String passw = request.getParameter("passw");
-		IUsagerService usagerService = new UsagerService();
+		//récupération de la factoty créé par FactoryListener
+		IFactory factory = (IFactory) request.getServletContext().getAttribute(
+				"factory");
+		//Utilisation de la Factory pour récupérer le composant necessaire
+		IUsagesService usagesService = factory.createUsagesService();
 		UsagerDTO searchedUsager = new UsagerDTO();
 		searchedUsager.setNom(login);
 		searchedUsager.setPassword(passw);
 		UsagerDTO dto = null;
 		try {
-			dto = usagerService.getAuthentifiedUsager(searchedUsager);
+			dto = usagesService.getAuthentifiedUsager(searchedUsager);
 		} catch (IllegalArgumentException e) {
 			request.getSession().setAttribute("error", e.getMessage());
 		}
