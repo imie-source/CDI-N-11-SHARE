@@ -3,8 +3,12 @@
  */
 package fr.imie.factory;
 
+import fr.imie.DAO.ISiteDAO;
 import fr.imie.DAO.IUsagerDAO;
-import fr.imie.DAO.UsagerDAO;
+import fr.imie.transactional.SiteDAOProxified;
+import fr.imie.transactional.UsagerDAOProxified;
+import fr.imie.transactional.UsagesServiceProxified;
+import fr.imie.transactionalFramework.TransactionalFactory;
 import fr.imie.usages.IUsagesService;
 import fr.imie.usages.UsagesService;
 
@@ -21,21 +25,37 @@ public class Factory implements IFactory {
 		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.imie.IFactory#createUsagerDAO()
 	 */
 	@Override
 	public IUsagerDAO createUsagerDAO() {
-		return new UsagerDAO();
+		TransactionalFactory<UsagerDAOProxified> TF = (TransactionalFactory<UsagerDAOProxified>) TransactionalFactory
+				.getInstance();
+		return TF.createTransactionalService(new UsagerDAOProxified(this));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.imie.IFactory#createUsagesService()
 	 */
 	@Override
 	public IUsagesService createUsagesService() {
-		// TODO Auto-generated method stub
-		return new UsagesService(this);
+
+		TransactionalFactory<UsagesServiceProxified> TF = (TransactionalFactory<UsagesServiceProxified>) TransactionalFactory
+				.getInstance();
+		return TF.createTransactionalService(new UsagesServiceProxified(this));
+	}
+
+	@Override
+	public ISiteDAO createSiteDAO() {
+		TransactionalFactory<SiteDAOProxified> TF = (TransactionalFactory<SiteDAOProxified>) TransactionalFactory
+				.getInstance();
+		return TF.createTransactionalService(new SiteDAOProxified(this));
+
 	}
 
 }

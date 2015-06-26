@@ -13,12 +13,22 @@ import java.util.List;
 
 import fr.imie.DTO.SiteDTO;
 import fr.imie.DTO.UsagerDTO;
+import fr.imie.factory.IFactory;
 
 /**
  * @author imie
  *
  */
 public class SiteDAO implements ISiteDAO {
+
+	private IFactory factory;
+	
+	
+	
+	public SiteDAO(IFactory factory) {
+		super();
+		this.factory = factory;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -162,7 +172,7 @@ public class SiteDAO implements ISiteDAO {
 	@Override
 	public Integer delete(SiteDTO siteDTO) {
 		// TODO singleton sur la classe DAO
-		UsagerDAO usagerDAO = new UsagerDAO();
+		IUsagerDAO usagerDAO = factory.createUsagerDAO();
 		Integer retour = null;
 		try (Connection connection = ConnectionProvider.getInstance()
 				.provideConnection()) {

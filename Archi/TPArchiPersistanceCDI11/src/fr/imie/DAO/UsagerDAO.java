@@ -15,6 +15,7 @@ import java.util.List;
 
 import fr.imie.DTO.SiteDTO;
 import fr.imie.DTO.UsagerDTO;
+import fr.imie.factory.IFactory;
 
 /**
  * @author imie
@@ -22,6 +23,13 @@ import fr.imie.DTO.UsagerDTO;
  */
 public class UsagerDAO implements IUsagerDAO {
 
+	private IFactory factory;
+	
+	public UsagerDAO(IFactory factory) {
+		super();
+		this.factory = factory;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -301,7 +309,7 @@ public class UsagerDAO implements IUsagerDAO {
 			fkSite = null;
 		}
 		// TODO singleton sur la classe DAO
-		ISiteDAO siteDAO = new SiteDAO();
+		ISiteDAO siteDAO = factory.createSiteDAO();
 		if (fkSite != null) {
 			SiteDTO siteDTO = new SiteDTO();
 			siteDTO.setId(fkSite);
