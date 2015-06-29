@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.sql.DataSource;
 
 import fr.imie.DAO.ISiteDAO;
 import fr.imie.DAO.IUsagerDAO;
@@ -15,18 +18,22 @@ import fr.imie.DTO.UsagerDTO;
 import fr.imie.connection.ConnectionProvider;
 import fr.imie.factory.IFactory;
 
-public class UsagesService implements IUsagesService {
+@Stateless
+public class UsagesServiceEJB implements IUsagesService {
 
-	@Inject @Named("realUsagerDAO")
+	@Resource(lookup="java:/jdbc/imieDB")
+	private DataSource datasource;
+	
+	@Inject @Named("mockedUsagerDAO")
 	private IUsagerDAO usagerDAO;
 	@Inject
 	private ISiteDAO siteDAO;
 
-	public UsagesService(IFactory factory) {
+	public UsagesServiceEJB(IFactory factory) {
 		usagerDAO = factory.createUsagerDAO();
 	}
 
-	public UsagesService() {
+	public UsagesServiceEJB() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -68,6 +75,7 @@ public class UsagesService implements IUsagesService {
 
 	@Override
 	public Integer deleteSite(SiteDTO siteDTO) {
+		//datasource.getConnection();
 		Integer retour = null;
 		try (Connection connection = ConnectionProvider.getInstance()
 				.provideConnection()) {

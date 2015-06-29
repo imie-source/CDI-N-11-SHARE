@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import fr.imie.DTO.SiteDTO;
 import fr.imie.DTO.UsagerDTO;
@@ -24,6 +25,7 @@ import fr.imie.factory.IFactory;
  * @author imie
  *
  */
+@Named("realUsagerDAO")
 public class UsagerDAO implements IUsagerDAO {
 
 	private IFactory factory;

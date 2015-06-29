@@ -11,6 +11,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Named;
+
 import fr.imie.DTO.SiteDTO;
 import fr.imie.connection.ConnectionProvider;
 import fr.imie.factory.IFactory;
