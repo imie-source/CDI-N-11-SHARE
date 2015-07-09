@@ -9,7 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import fr.imie.UsagerEntity;
+import fr.imie.entity.UsagerEntity;
 
 /**
  * @author imie
@@ -25,14 +25,12 @@ public class UsagesService {
 		UsagerEntity retour = entityManager.find(UsagerEntity.class, id);
 		return retour;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public List<UsagerEntity> findAll() {
+		@SuppressWarnings("unchecked")
+		List<UsagerEntity> usagerEntities = entityManager.createNamedQuery(
+				"UsagerEntity.findAll").getResultList();
+		return usagerEntities;
+	}
 
 }
