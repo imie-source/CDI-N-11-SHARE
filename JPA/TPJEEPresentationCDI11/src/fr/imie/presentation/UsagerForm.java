@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.imie.entity.UsagerEntity;
 import fr.imie.service.UsagesService;
 
 /**
@@ -36,8 +37,10 @@ public class UsagerForm extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String idParameter = request.getParameter("id");
-		Integer id = Integer.valueOf(idParameter);
-		request.setAttribute("usager", usagesService.findById(id));
+		if (idParameter != null) {
+			Integer id = Integer.valueOf(idParameter);
+			request.setAttribute("usager", usagesService.findById(id));
+		}
 		request.getRequestDispatcher("/WEB-INF/usagerForm.jsp").forward(
 				request, response);
 	}
@@ -48,7 +51,13 @@ public class UsagerForm extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		if (request.getParameter("actionCreer") != null) {
+			UsagerEntity usagerEntity = new UsagerEntity();
+			usagerEntity.setNom(request.getParameter("inputNom"));
+			usagerEntity.setPrenom(request.getParameter("inputPrenom"));
+			usagesService.createUsager(usagerEntity);
+			response.sendRedirect("usagerList");
+		}
 	}
 
 }

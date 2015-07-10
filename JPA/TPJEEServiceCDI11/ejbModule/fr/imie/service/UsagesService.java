@@ -44,4 +44,10 @@ public class UsagesService {
 		return usagerEntities;
 	}
 
+	public UsagerEntity createUsager(UsagerEntity usagerEntity) {
+		entityManager.persist(usagerEntity);
+		return usagerEntity;
+		
+	}
+
 }

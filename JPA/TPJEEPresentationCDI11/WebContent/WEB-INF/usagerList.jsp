@@ -4,6 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <link rel="stylesheet"
 	href="foudation/foundation-essentials-5.5.2/css/foundation.css">
+<link rel="stylesheet"
+	href="main.css">
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,21 +18,24 @@
 		<div class="small-12 large-4 columns">
 			<form method="post">
 				<div class="row">
-					<div class="large-6 columns">
-						<label for="inputNom">nom</label> <input type="text" id="inputNom"
+					<div class="small-5 large-12 columns">
+						<label>nom <input type="text" id="inputNom"
 							name="inputNom" value="${param.inputNom}">
+						</label>
 					</div>
-					<div class="large-6 columns">
-						<label for="inputPrenom">prenom</label> <input type="text"
-							id="inputPrenom" name="inputPrenom" value="${param.inputPrenom}">
+					<div class="small-5 large-12 columns">
+						<label>prenom <input type="text" id="inputPrenom"
+							name="inputPrenom" value="${param.inputPrenom}">
+						</label>
+
+					</div>
+					<div class="small-2 large-12 columns">
+						<input type="submit" value="rechercher" name="actionRechercher">
+					</div>
+					<div class="small-12 large-12 columns">
+						<input type="submit" value="créer" name="actionCreer">
 					</div>
 				</div>
-				<div class="row">
-					<div class="large-6 columns">
-						<input type="submit" value="rechercher">
-					</div>
-				</div>
-				
 			</form>
 		</div>
 		<div class="small-12 large-8 columns">
