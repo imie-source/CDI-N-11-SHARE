@@ -60,6 +60,15 @@ public class UsagerList extends HttpServlet {
 					request, response);
 		} else if (request.getParameter("actionCreer") != null) {
 			response.sendRedirect("usagerForm");
+		} else if (request.getParameter("actionSupprimer") != null) {
+			String idParameter = request.getParameter("inputId");
+			Integer id = Integer.valueOf(idParameter);
+			UsagerEntity usagerEntity = new UsagerEntity();
+			usagerEntity.setId(id);
+			usagesService.delete(usagerEntity);
+			request.setAttribute("usagers", usagesService.findAll());
+			request.getRequestDispatcher("/WEB-INF/usagerList.jsp").forward(
+					request, response);
 		}
 
 	}

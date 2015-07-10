@@ -4,8 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <link rel="stylesheet"
 	href="foudation/foundation-essentials-5.5.2/css/foundation.css">
-<link rel="stylesheet"
-	href="main.css">
+<link rel="stylesheet" href="main.css">
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -50,6 +49,10 @@
 					<div class="small-6 large-4 columns">${usager.prenom}</div>
 					<div class="small-6 large-4 columns">
 						<a href="usagerForm?id=${usager.id}">form</a>
+						<form method="post">
+							<input type="hidden" value="${usager.id}" name="inputId"/>
+							<input type="submit" value="delete" name="actionSupprimer">
+						</form>
 					</div>
 				</div>
 			</c:forEach>

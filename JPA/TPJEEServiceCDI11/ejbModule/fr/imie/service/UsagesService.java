@@ -50,4 +50,10 @@ public class UsagesService {
 		
 	}
 
+	public void delete(UsagerEntity usagerEntity) {
+		usagerEntity = entityManager.merge(usagerEntity);
+		entityManager.remove(usagerEntity);
+		
+	}
+
 }
