@@ -57,6 +57,14 @@ public class UsagerForm extends HttpServlet {
 			usagerEntity.setPrenom(request.getParameter("inputPrenom"));
 			usagesService.createUsager(usagerEntity);
 			response.sendRedirect("usagerList");
+		} else if (request.getParameter("actionModifier") != null) {
+			UsagerEntity usagerEntity = new UsagerEntity();
+			usagerEntity.setNom(request.getParameter("inputNom"));
+			usagerEntity.setPrenom(request.getParameter("inputPrenom"));
+			usagerEntity
+					.setId(Integer.valueOf(request.getParameter("inputId")));
+			usagesService.updateUsager(usagerEntity);
+			response.sendRedirect("usagerList");
 		}
 	}
 

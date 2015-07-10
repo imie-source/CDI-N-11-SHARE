@@ -14,6 +14,7 @@
 </head>
 <body>
 	<form method="post">
+		<input type="hidden" value="${usager.id}" name="inputId" >
 		<div>
 			<label>nom : </label> <input type="text" value="${usager.nom}"
 				name="inputNom" />
@@ -24,10 +25,10 @@
 		</div>
 		<c:choose>
 			<c:when test="${empty usager}">
-				<input type="submit" name="actionCreer">
+				<input type="submit" value="créer" name="actionCreer">
 			</c:when>
 			<c:otherwise>
-				<input type="submit" name="actionModifier">
+				<input type="submit" value="modifier" name="actionModifier">
 			</c:otherwise>
 		</c:choose>
 

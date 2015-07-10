@@ -15,7 +15,7 @@
 <body>
 	<div class="row">
 		<div class="small-12 large-4 columns">
-			<form method="post">
+			<form method="post" class="custom">
 				<div class="row">
 					<div class="small-5 large-12 columns">
 						<label>nom <input type="text" id="inputNom"

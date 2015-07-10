@@ -56,4 +56,15 @@ public class UsagesService {
 		
 	}
 
+	public UsagerEntity updateUsager(UsagerEntity usagerEntity) {
+		//solution 1
+		UsagerEntity usagerEntity2 = entityManager.find(UsagerEntity.class, usagerEntity.getId());
+		usagerEntity2.setNom(usagerEntity.getNom());
+		usagerEntity2.setPrenom(usagerEntity.getPrenom());
+		return usagerEntity2;
+		
+		//solution 2
+		//return entityManager.merge(usagerEntity);
+	}
+
 }
