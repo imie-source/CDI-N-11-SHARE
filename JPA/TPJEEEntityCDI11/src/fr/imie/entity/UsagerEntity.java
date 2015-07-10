@@ -1,44 +1,54 @@
 package fr.imie.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the "usager" database table.
  * 
  */
 @Entity
-@Table(name="usager")
-@NamedQuery(name="UsagerEntity.findAll", query="SELECT u FROM UsagerEntity u")
+@Table(name = "usager")
+@NamedQueries({
+		@NamedQuery(name = "UsagerEntity.findAll", query = "SELECT u FROM UsagerEntity u"),
+		@NamedQuery(name = "UsagerEntity.findByNom", query = "SELECT u FROM UsagerEntity u WHERE u.nom like :nom and u.prenom like :prenom") })
 public class UsagerEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="date_naissance")
+	@Column(name = "date_naissance")
 	private Date dateNaissance;
 
-	@Column(name="email")
+	@Column(name = "email")
 	private String email;
 
-	@Column(name="nb_connexion")
+	@Column(name = "nb_connexion")
 	private int nbConnexion;
 
-	@Column(name="nom")
+	@Column(name = "nom")
 	private String nom;
 
-	@Column(name="password")
+	@Column(name = "password")
 	private String password;
 
-	@Column(name="prenom")
+	@Column(name = "prenom")
 	private String prenom;
-
 
 	public UsagerEntity() {
 	}
@@ -98,6 +108,5 @@ public class UsagerEntity implements Serializable {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-
 
 }

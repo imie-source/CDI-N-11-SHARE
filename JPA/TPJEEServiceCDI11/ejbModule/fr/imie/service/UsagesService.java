@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import fr.imie.entity.UsagerEntity;
 
@@ -30,6 +31,16 @@ public class UsagesService {
 		@SuppressWarnings("unchecked")
 		List<UsagerEntity> usagerEntities = entityManager.createNamedQuery(
 				"UsagerEntity.findAll").getResultList();
+		return usagerEntities;
+	}
+	
+	public List<UsagerEntity> findByNom(String nom,String prenom) {
+		Query query = entityManager.createNamedQuery(
+				"UsagerEntity.findByNom");
+		query.setParameter("nom", "%"+nom+"%");
+		query.setParameter("prenom", "%"+prenom+"%");
+		@SuppressWarnings("unchecked")
+		List<UsagerEntity> usagerEntities = query.getResultList();
 		return usagerEntities;
 	}
 

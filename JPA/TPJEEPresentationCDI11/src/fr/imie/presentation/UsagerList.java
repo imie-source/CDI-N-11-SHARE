@@ -38,6 +38,7 @@ public class UsagerList extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		List<UsagerEntity> usagerEntities =usagesService.findAll();
+		//List<UsagerEntity> usagerEntities =usagesService.findByNom("paul");
 		request.setAttribute("usagers", usagerEntities);
 		request.getRequestDispatcher("/WEB-INF/usagerList.jsp").forward(request, response);
 	}
@@ -48,7 +49,13 @@ public class UsagerList extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String nom = request.getParameter("inputNom");
+		String prenom = request.getParameter("inputPrenom");
+		List<UsagerEntity> usagerEntities=usagesService.findByNom(nom,prenom);
+		request.setAttribute("usagers", usagerEntities);
+		request.getRequestDispatcher("/WEB-INF/usagerList.jsp").forward(request, response);
+	
+		
 	}
 
 }
