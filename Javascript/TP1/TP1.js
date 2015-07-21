@@ -118,62 +118,54 @@ function EX7(displayFunction) {
 }
 
 
+function EX8(displayFunction) {
+    var tab = [10, 65, 43, 97, 21, 54];
+    var sum = 0;
+    var displayTab = [];
+    for (var indexCompletion = 0; indexCompletion < tab.length; indexCompletion++) {
+        displayTab.push({
+            value: tab[indexCompletion]
+        });
+    }
+    displayFunction(displayTab);
+    for (var stable = 0; stable < tab.length - 1; stable++) {
+        var permut = false;
+        var currentPermut = false;
+        displayTab = [];
+        for (var i = 0; i <= tab.length - (stable + 1); i++) {
+            var state=undefined;
+            if (tab[i] > tab[i + 1]) {
+                var tmp = tab[i];
+                tab[i] = tab[i + 1];
+                tab[i + 1] = tmp;
+                permut = true;
+                if (!currentPermut) {
+                    state = 'start';
+                } else {
+                    state = 'middle';
+                }
+                currentPermut = true;
+            } else {
+                if (currentPermut) {
+                    state = 'end';
+                }
+                currentPermut = false;
+            }
+            displayTab.push({
+                value: tab[i],
+                state: state
+            });
 
-function EXHULK() {
-    function Test() {}
-
-    Test.prototype = {
-        speak: function () {
-            console.log("bonjour test");
+        }
+        for (var indexCompletion = tab.length - stable; indexCompletion < tab.length; indexCompletion++) {
+            displayTab.push({
+                value: tab[indexCompletion]
+            });
+        }
+        displayFunction(displayTab);
+        if (!permut) {
+            break;
         }
     }
-    var test = new Test();
-    test.speak();
-    test.constructor.prototype.speak2 = function () {
-        console.log("bonjour test2");
-    }
-    test.speak2();
-
-
-
-    function Human() {
-        this.speak = function () {
-            console.log("bonjour");
-        }
-    }
-
-    function Monster() {
-        this.speak = function () {
-            console.log("grrrr");
-        }
-    }
-
-    function Hulk() {}
-
-    // hulk hérite de Human
-    Hulk.prototype = new Human()
-        //Hulk.prototype.constructor=Hulk;
-    hulk1 = new Hulk()
-    hulk1.speak() // "bonjour"
-    console.log(hulk1.constructor);
-    console.log(hulk1.constructor.prototype);
-
-    // hulk hérite Monster
-    Hulk.prototype = new Monster();
-    //Hulk.prototype.constructor=Hulk;
-    Hulk.prototype.speak = function () {
-        console.log("GRRRRR");
-    };
-    hulk2 = new Hulk()
-    hulk2.speak() // "grrrr"
-    console.log(hulk2.constructor);
-    console.log(hulk2.constructor.prototype);
-
-
-    // Attention:
-    hulk1.speak() // "bonjour"
-    console.log(hulk1);
-    console.log(hulk1.constructor);
-    console.log(hulk1.constructor.prototype);
-
+    console.log(tab);
 }

@@ -13,8 +13,13 @@
             document.write('<div>');
             for (keyValue in tab) {
                 var cell = tab[keyValue];
-                document.write('<div class="inline '+cell.state+'">');
+                document.write('<div class="inline">');
+                document.write('<div>');
                 document.write(cell.value);
+                document.write('</div>');
+                document.write('<div>');
+                document.write(cell.state);
+                document.write('</div>');
                 document.write('</div>');
             }
             document.write('</div>');
