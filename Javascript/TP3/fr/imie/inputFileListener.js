@@ -1,4 +1,4 @@
-var fr =fr?fr:{};
+var fr =fr||{};
 fr.imie = fr.imie||{};
 fr.imie.inputFileListener = {};
 fr.imie.inputFileListener.proto = {
