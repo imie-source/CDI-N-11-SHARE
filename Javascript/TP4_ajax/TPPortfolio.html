@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="JQuery/jquery-ui.custom/external/jquery/jquery.js"></script>
+    <script src="JQuery/jquery-ui.custom/jquery-ui.js"></script>
+    <script src="fr/imie/inputFileListener.js"></script>
+    <script src="TPPortfolio.js"></script>
+    <link href="JQuery/jquery-ui.custom/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="TPPortfolio.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+    <input type="file" id="fileSelector" accept="image" multiple/>
+    <button id="buttonFileSelector">+</button>
+    <div id="slideShow" class="slideShow tableLayout" style="">
+        <div class="slideNavigation slideNavigationLeft cellLayout"></div>
+        <div id="cardContainer" class="cellLayout">
+
+        </div>
+        <div id="cardModel" class="inline card" data-nb="4">
+            <div class="headCard tableLayout">
+                <div class="cellLayout" style="width:100%">
+                    <h1 class="fileTitle" ></h1>
+                </div>
+                <div class="cellLayout">
+                    <button class="buttonEdit">edit</button>
+                </div>
+                <div class="cellLayout">
+                    <button class="buttonClose">close</button>
+                </div>
+
+            </div>
+            <img class="fileImage largeImage" />
+            <div>
+                <label>description</label>
+                <textarea class="fileDescription"></textarea>
+            </div>
+            <div>
+                <label>tags</label>
+                <ul class="fileTags" class="itemList tags">
+                </ul>
+            </div>
+            <div>
+                <label>nom du fichier</label>
+                <input class="fileName" type="text" />
+            </div>
+            <div>
+                <label>date de mise en ligne</label>
+                <input class="fileDateOn" type="text" />
+            </div>
+        </div>
+
+        <div class="slideNavigation slideNavigationRight cellLayout"></div>
+    </div>
+    <div id="editPanel">
+        <div><img id="editImg" class="mediumImage" /></div>
+        <div>
+            <label>titre</label>
+            <input type="text" id="editTitre" />
+        </div>
+        <div>
+            <label>description</label>
+            <textarea rows="5" id="editDescription"></textarea>
+        </div>
+        <div>
+            <label>tags</label>
+            <div class="inline">
+                <ul id="sortable1" class="itemList tags">
+                </ul>
+            </div>
+            <div class="inline">
+                <ul id="sortable2" class="itemList tags">
+                </ul>
+            </div>
+        </div>
+        <div>
+            <label>date de mise en ligne</label>
+            <input type="text" id="editDateOn" />
+        </div>
+        <div>
+            <label>nom du ficher</label>
+            <input type="text" id="editFileName" />
+        </div>
+    </div>
+
+</body>
+
+</html>
