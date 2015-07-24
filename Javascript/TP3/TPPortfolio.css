@@ -1,0 +1,52 @@
+ul.itemList {
+    list-style-type: none;
+    background-color: #EEE;
+    padding: 5px;
+    text-align: center;
+    cursor: default;
+}
+ul.itemList li {
+    cursor: grab;
+    height: 20px;
+}
+.inline {
+    display: inline-block;
+}
+.tags {
+    width: 100px;
+    height: 100px;
+    overflow-y: scroll;
+}
+.card {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+}
+.slideShow {
+    vertical-align: middle;
+    border-style: solid;
+}
+.slideNavigation {
+    background-color: green;
+    width: 30px;
+}
+.cellLayout {
+    display: table-cell;
+}
+.tableLayout {
+    display: table;
+}
+
+.mediumImage{
+    height: 100px;
+    width: 200px;
+    overflow: auto; 
+}
+
+.largeImage{
+    height: 200px;
+    width: 300px;
+    overflow: auto; 
+}
